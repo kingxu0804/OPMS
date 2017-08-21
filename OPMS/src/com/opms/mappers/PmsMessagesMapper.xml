@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.opms.mappers.PmsMessagesMapper" >
+  <!-- author:liyanpeng -->
+  
+  <select id="listPmsMessages" parameterType="java.lang.Long" resultType="com.opms.entity.PmsMessages">
+  	select * from pms_messages where userid =#{userid}
+  </select>
+  <insert id="addPmsMessages" parameterType="com.opms.entity.PmsMessages">
+  	insert into pms_messages values(#{msgid},#{userid},#{touserid},#{type},#{subtype},#{title},#{url},#{view},#{created})
+  </insert>
+  <select id="countNotices" parameterType="java.lang.Long" resultType="java.lang.Integer">
+  	select count(*) from pms_messages where userid=#{userid} and view=1;
+  </select>
+  <select id="listPmsMessagesNoView" parameterType="java.lang.Long" resultType="com.opms.entity.PmsMessages">
+  	select * from pms_messages where userid=#{userid} and view=1 limit 3;
+  </select>
+  <delete id="deletePmsMessages" parameterType="java.lang.Long">
+  	delete from pms_messages where msgid=#{msgid}
+  </delete>
+</mapper>

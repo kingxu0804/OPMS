@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.opms.mappers.PmsLeavesApproverMapper" >
+  <resultMap id="BaseResultMap" type="com.opms.entity.PmsLeavesApprover" >
+    <id column="approverid" property="approverid" jdbcType="BIGINT" />
+    <result column="leaveid" property="leaveid" jdbcType="BIGINT" />
+    <result column="userid" property="userid" jdbcType="BIGINT" />
+    <result column="summary" property="summary" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="INTEGER" />
+    <result column="created" property="created" jdbcType="TIMESTAMP" />
+    <result column="changed" property="changed" jdbcType="TIMESTAMP" />
+  </resultMap>
+  
+  <sql id="Base_Column_List" >
+    approverid, leaveid, userid, summary, status, created, changed
+  </sql>
+  
+  <!-- 根据请假事件id获取审批人审批状态的信息 -->
+  <select id="listApprovalInfo" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from pms_leaves_approver
+    where leaveid = #{leaveid,jdbcType=BIGINT}
+  </select>
+  <!-- 根据请假事件id和审批人id更新单独案件审批信息 -->
+  <update id="updateLeaveApprovalInfo" parameterType="com.opms.entity.PmsLeavesApprover" >
+      update pms_leaves_approver
+    <set >
+        summary = #{summary,jdbcType=VARCHAR}, status = #{status,jdbcType=INTEGER},created = #{created,jdbcType=TIMESTAMP},
+    </set>
+    where userid = #{userid,jdbcType=BIGINT} and  leaveid =#{leaveid,jdbcType=BIGINT}
+  </update>
+  <!-- 根据用户id和请假事假 id 查询审批信息 -->
+  <select id="getApprovalInfo" parameterType="com.opms.entity.PmsLeavesApprover" resultType="com.opms.entity.PmsLeavesApprover">
+   select * from pms_leaves_approver where userid= #{userid,jdbcType=BIGINT} and  leaveid =#{leaveid,jdbcType=BIGINT}
+  </select>  
+  
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from pms_leaves_approver
+    where approverid = #{approverid,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from pms_leaves_approver
+    where approverid = #{approverid,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.opms.entity.PmsLeavesApprover" >
+    insert into pms_leaves_approver (approverid, leaveid, userid, 
+      summary, status, created, 
+      changed)
+    values (#{approverid,jdbcType=BIGINT}, #{leaveid,jdbcType=BIGINT}, #{userid,jdbcType=BIGINT}, 
+      #{summary,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER}, #{created,jdbcType=TIMESTAMP}, 
+      #{changed,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.opms.entity.PmsLeavesApprover" >
+    insert into pms_leaves_approver
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="approverid != null" >
+        approverid,
+      </if>
+      <if test="leaveid != null" >
+        leaveid,
+      </if>
+      <if test="userid != null" >
+        userid,
+      </if>
+      <if test="summary != null" >
+        summary,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="created != null" >
+        created,
+      </if>
+      <if test="changed != null" >
+        changed,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="approverid != null" >
+        #{approverid,jdbcType=BIGINT},
+      </if>
+      <if test="leaveid != null" >
+        #{leaveid,jdbcType=BIGINT},
+      </if>
+      <if test="userid != null" >
+        #{userid,jdbcType=BIGINT},
+      </if>
+      <if test="summary != null" >
+        #{summary,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=INTEGER},
+      </if>
+      <if test="created != null" >
+        #{created,jdbcType=TIMESTAMP},
+      </if>
+      <if test="changed != null" >
+        #{changed,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  
+  <update id="updateByPrimaryKeySelective" parameterType="com.opms.entity.PmsLeavesApprover" >
+    update pms_leaves_approver
+    <set >
+      <if test="leaveid != null" >
+        leaveid = #{leaveid,jdbcType=BIGINT},
+      </if>
+      <if test="userid != null" >
+        userid = #{userid,jdbcType=BIGINT},
+      </if>
+      <if test="summary != null" >
+        summary = #{summary,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=INTEGER},
+      </if>
+      <if test="created != null" >
+        created = #{created,jdbcType=TIMESTAMP},
+      </if>
+      <if test="changed != null" >
+        changed = #{changed,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where approverid = #{approverid,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.opms.entity.PmsLeavesApprover" >
+    update pms_leaves_approver
+    set leaveid = #{leaveid,jdbcType=BIGINT},
+      userid = #{userid,jdbcType=BIGINT},
+      summary = #{summary,jdbcType=VARCHAR},
+      status = #{status,jdbcType=INTEGER},
+      created = #{created,jdbcType=TIMESTAMP},
+      changed = #{changed,jdbcType=TIMESTAMP}
+    where approverid = #{approverid,jdbcType=BIGINT}
+  </update>
+</mapper>

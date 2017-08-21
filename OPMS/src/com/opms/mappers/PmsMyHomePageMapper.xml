@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.opms.mappers.PmsMyHomePageMapper" >
+<!-- 查找个人信息 -->
+<select id="selectUsersProfileDepartPostion" parameterType="java.lang.Long" resultType="com.opms.entity.PmsUsersProfileDepartPostion">
+
+select pms_users_profile.*,pms_positions.name name1,pms_departs.name name2 from pms_users_profile ,pms_positions,pms_departs where userid=#{userid} and pms_departs.departid=(select departid from pms_users_profile where userid=#{userid})  and pms_positions.positionid=(select positionid from pms_users_profile where userid=#{userid})
+
+</select>
+<!-- 查询个人照片 -->
+<select id="listAlbumsByUserid" parameterType="java.lang.Long" resultType="com.opms.entity.PmsAlbums">
+  select * from pms_albums where 1=1 
+  	<if test="_parameter!=null">
+		and userid = #{userid}
+  	</if>
+</select>
+</mapper>

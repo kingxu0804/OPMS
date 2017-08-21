@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.opms.mappers.PmsAlbumsCommentMapper" >
+  <resultMap id="BaseResultMap" type="com.opms.entity.PmsAlbumsCommentAndUsers" >
+    <id column="comtid" property="comtid" jdbcType="BIGINT" />
+    <result column="userid" property="userid" jdbcType="BIGINT" />
+    <result column="albumid" property="albumid" jdbcType="BIGINT" />
+    <result column="content" property="content" />
+    <result column="created" property="created" jdbcType="TIMESTAMP" />
+    <result column="status" property="status" jdbcType="INTEGER" />
+    <result column="username" property="username"/>
+    <result column="avatar" property="avatar" />
+  </resultMap>
+  <select id="listCommentByAlbumid" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+   select pac.* ,pu.username,pu.avatar from pms_albums_comment pac inner join pms_users pu on 
+   pac.userid=pu.userid where albumid = #{albumid};
+  </select>
+  <insert id="insertComment" parameterType="com.opms.entity.PmsAlbumsComment" >
+    insert into pms_albums_comment values (#{comtid,jdbcType=BIGINT}, #{userid,jdbcType=BIGINT}, 
+    #{albumid,jdbcType=BIGINT}, #{content,jdbcType=VARCHAR}, #{created,jdbcType=TIMESTAMP}, 
+    #{status,jdbcType=INTEGER})
+  </insert>
+</mapper>
